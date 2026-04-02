@@ -2,45 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FREE TOPPING!!!</title>
+    <title>วงล้อซิ่ง!!!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
     <script src="./script.js" defer></script>
 </head>
 <body>
 
-<!-- Add a text box to display the result -->
-<div id="result-box" class="result-text">Spin the slot machine!</div>
+<canvas id="confetti-canvas"></canvas>
+<div class="scene">
 
-<div id="container">
-    <div class="window-border">
-        <div class="window">
-            <div class="outer-spacer"></div>
-            <div class="outer-col">
-                <div class="col"></div>
+    <!-- Machine wrapper -->
+    <div class="machine">
+
+        <!-- Top marquee with lights -->
+        <div class="marquee">
+            <div class="marquee-lights">
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
             </div>
-            <div class="outer-spacer"></div>
-            <div class="outer-col">
-                <div class="col"></div>
+            <div class="marquee-title">วงล้อซิ่ง</div>
+            <div class="marquee-lights bottom">
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+                <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
             </div>
-            <div class="outer-spacer"></div>
-            <div class="outer-col">
-                <div class="col"></div>
+        </div>
+
+        <!-- Cabinet body -->
+        <div id="container">
+            <div class="reel-area">
+                <!-- Pay line arrow left -->
+                <div class="payline-arrow left">&#9654;</div>
+
+                <div class="window-border">
+                    <div class="window">
+                        <div class="outer-spacer"></div>
+                        <div class="outer-col"><div class="col"></div></div>
+                        <div class="outer-spacer"></div>
+                        <div class="outer-col"><div class="col"></div></div>
+                        <div class="outer-spacer"></div>
+                        <div class="outer-col"><div class="col"></div></div>
+                        <div class="outer-spacer"></div>
+                        <div class="outer-col"><div class="col"></div></div>
+                        <div class="outer-spacer"></div>
+                        <div class="outer-col"><div class="col"></div></div>
+                        <div class="outer-spacer"></div>
+                    </div>
+                    <!-- Pay line -->
+                    <div class="payline"></div>
+                </div>
+
+                <!-- Pay line arrow right -->
+                <div class="payline-arrow right">&#9664;</div>
             </div>
-            <div class="outer-spacer"></div>
-            <div class="outer-col">
-                <div class="col"></div>
+
+            <!-- Result display -->
+            <div id="result-box" class="result-text">SPIN TO WIN!</div>
+
+            <!-- Spin button -->
+            <div class="button-row">
+                <button onclick="spin(this)" class="start-button" id="spin-btn">
+                    <span class="btn-text">SPIN</span>
+                </button>
             </div>
-            <div class="outer-spacer"></div>
-            <div class="outer-col">
-                <div class="col"></div>
+        </div>
+
+        <!-- Machine base / tray -->
+        <div class="machine-base"></div>
+    </div>
+
+    <!-- Lever -->
+    <div id="lever" onclick="document.getElementById('spin-btn').click()">
+        <div class="lever-mount"></div>
+        <div class="lever-slot">
+            <div class="lever-stick">
+                <div class="lever-knob"></div>
             </div>
-            <div class="outer-spacer"></div>
-            
         </div>
     </div>
-    
-    <input type="button" onclick="spin(this)" class="start-button" value="Spin"/>
-    
+
 </div>
 
 </body>

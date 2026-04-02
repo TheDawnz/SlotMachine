@@ -1,107 +1,245 @@
-/*
- * Some general styling
- */
+/* ========================================
+   Reset & Variables
+   ======================================== */
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
     --item-height: 100px;
+    --gold: #f5c518;
+    --gold-dark: #c9a200;
+    --red: #d4213d;
+    --red-dark: #8b0000;
+    --cabinet: #1a0a2e;
+    --cabinet-light: #2d1552;
 }
+
+/* ========================================
+   Page / Scene
+   ======================================== */
 
 body {
-    background-color: #444;
-    margin: 0;
+    background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Russo One', sans-serif;
 }
 
-/*
- * Style the orange box
- */
-
-.start-button {
-    display: block;
-    margin: 1em auto;
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
 }
+
+.scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 0;
+}
+
+/* ========================================
+   Machine Cabinet
+   ======================================== */
+
+.machine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.7));
+}
+
+/* ========================================
+   Marquee (Top Banner)
+   ======================================== */
+
+.marquee {
+    background: linear-gradient(180deg, var(--red), var(--red-dark));
+    border-radius: 20px 20px 0 0;
+    padding: 10px 20px;
+    text-align: center;
+    width: 720px;
+    position: relative;
+    border: 3px solid var(--gold);
+    border-bottom: none;
+    box-shadow:
+        0 -4px 20px rgba(213, 33, 61, 0.5),
+        inset 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+.marquee-title {
+    font-family: 'Bowlby One SC', cursive;
+    font-size: 2.8rem;
+    color: var(--gold);
+    text-shadow:
+        0 0 10px rgba(245, 197, 24, 0.8),
+        0 0 30px rgba(245, 197, 24, 0.4),
+        0 2px 0 #8b6914;
+    letter-spacing: 4px;
+    padding: 4px 0;
+}
+
+/* Marquee light bulbs */
+.marquee-lights {
+    display: flex;
+    justify-content: space-around;
+    padding: 4px 10px;
+}
+
+.bulb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bulb-flash 1.2s infinite alternate;
+}
+
+.bulb:nth-child(odd) {
+    background: var(--gold);
+    box-shadow: 0 0 6px var(--gold), 0 0 14px rgba(245, 197, 24, 0.5);
+}
+
+.bulb:nth-child(even) {
+    background: #fff;
+    box-shadow: 0 0 6px #fff, 0 0 14px rgba(255, 255, 255, 0.4);
+    animation-delay: 0.6s;
+}
+
+@keyframes bulb-flash {
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ========================================
+   Cabinet Body (#container)
+   ======================================== */
 
 #container {
-    background-color: #fd9b03;
-    padding: 50px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -320px;
-    margin-top: -220px;
+    background: linear-gradient(180deg, var(--cabinet-light), var(--cabinet), #0e0520);
+    padding: 30px 40px 25px;
+    width: 720px;
+    border-left: 3px solid var(--gold);
+    border-right: 3px solid var(--gold);
+    position: relative;
+}
+
+/* ========================================
+   Reel Area
+   ======================================== */
+
+.reel-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.window-border {
+    padding: 6px;
+    background: linear-gradient(180deg, #fcf8ad, #f8f3cd, #f9e13d);
+    box-shadow:
+        0 6px 4px -5px #eca654 inset,
+        0 0 20px rgba(245, 197, 24, 0.3);
+    border-radius: 8px;
+    flex: 1;
+    position: relative;
 }
 
 .window {
     position: relative;
     overflow: hidden;
     height: calc(3 * var(--item-height));
+    border-radius: 4px;
+    width: 536px;
 }
 
 .window::before {
     content: "";
-    clear: both;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 6px;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+    height: 8px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+    z-index: 5;
 }
 
 .window::after {
     content: "";
-    clear: both;
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 6px;
-    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
+    height: 8px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+    z-index: 5;
 }
 
-.window-border {
-    padding: 5px;
-    background-image: linear-gradient(to bottom, #fcf8ad, #f8f3cd, #f9e13d);
-    box-shadow: 0 6px 4px -5px #eca654 inset;
+/* Pay line */
+.payline {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red), 0 0 20px rgba(213, 33, 61, 0.4);
+    z-index: 6;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 
-/*
- * Reels and icon styling
- */
+.payline-arrow {
+    font-size: 1.4rem;
+    color: var(--red);
+    text-shadow: 0 0 8px var(--red);
+    flex-shrink: 0;
+    animation: arrow-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes arrow-pulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+}
+
+/* ========================================
+   Reels & Icons
+   ======================================== */
+
+.outer-col {
+    overflow-y: hidden;
+    width: 100px;
+    float: left;
+    background: linear-gradient(180deg, #16013c, #741a5e, #430155, #16013c);
+    height: calc(var(--item-height) * 3);
+}
+
+.outer-spacer {
+    width: 6px;
+    height: 100%;
+    float: left;
+    background: linear-gradient(180deg, #be4d01, #893802);
+    border-right: 1px solid rgba(247, 206, 108, 0.15);
+}
 
 .icon {
     width: 80px;
     height: var(--item-height);
     display: block;
     position: relative;
-
-    /*animation: wiggle 0.1s linear infinite;*/
-}
-
-.outer-col {
-    overflow-y: hidden;
-    width: 100px;
-    float: left;
-    background-color: #eee;
-    background-image: linear-gradient(#16013c, #741a5e, #430155, #16013c);
-    height: calc(var(--item-height) * 3);
-}
-
-.outer-spacer {
-    width: 8px;
-    height: 100%;
-    float: left;
-    border-right: 2px solid #f7ce6c38;
-    background-image: linear-gradient(#be4d01, #893802);
 }
 
 .col {
     padding: 0 10px;
-    will-change: true;
+    will-change: transform;
     transform: translateY(calc(-100% + var(--item-height) * 3));
 }
 
@@ -113,10 +251,8 @@ body {
     z-index: 3;
 }
 
-/* shadow effect behind the items */
 .col .icon::after {
     content: "";
-    clear: both;
     display: block;
     position: absolute;
     top: 50%;
@@ -129,19 +265,16 @@ body {
     border-radius: 100%;
 }
 
-
-/*
- * Spinning animation
- */
+/* ========================================
+   Spinning Animation
+   ======================================== */
 
 #container.spinning .outer-col:nth-of-type(2) .col {
     animation-delay: 0.01s;
 }
-
 #container.spinning .outer-col:nth-of-type(3) .col {
     animation-delay: 0.02s;
 }
-
 #container.spinning .outer-col:nth-of-type(4) .col {
     animation-delay: 0.03s;
 }
@@ -152,44 +285,231 @@ body {
     animation-timing-function: cubic-bezier(.65, .97, .72, 1);
 }
 
-
 @keyframes scroll {
-    to {
-        transform: translateY(0);
-    }
+    to { transform: translateY(0); }
 }
 
-/*@keyframes wiggle {
-    0% {
-        transform: rotate(7deg);
+/* ========================================
+   Result Display
+   ======================================== */
+
+.result-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 18px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(245, 197, 24, 0.3);
+    border-radius: 8px;
+    text-shadow: 0 0 10px rgba(245, 197, 24, 0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.result-text.win {
+    color: #fff;
+    background: rgba(213, 33, 61, 0.3);
+    border-color: var(--red);
+    text-shadow: 0 0 10px var(--red);
+    animation: result-glow 0.5s ease-in-out 3;
+}
+
+.result-text.jackpot {
+    color: var(--gold);
+    background: rgba(245, 197, 24, 0.15);
+    border-color: var(--gold);
+    text-shadow: 0 0 20px var(--gold);
+    animation: result-glow-gold 0.4s ease-in-out 5;
+}
+
+.result-text.loss {
+    color: #999;
+    border-color: rgba(150, 150, 150, 0.2);
+    text-shadow: none;
+}
+
+@keyframes result-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(213, 33, 61, 0.3); }
+    50%      { box-shadow: 0 0 30px rgba(213, 33, 61, 0.6); }
+}
+
+@keyframes result-glow-gold {
+    0%, 100% { box-shadow: 0 0 10px rgba(245, 197, 24, 0.3); }
+    50%      { box-shadow: 0 0 40px rgba(245, 197, 24, 0.7); }
+}
+
+/* ========================================
+   Spin Button
+   ======================================== */
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.start-button {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid var(--gold);
+    background: radial-gradient(circle at 35% 35%, #ff3b3b, var(--red), var(--red-dark));
+    color: var(--gold);
+    font-family: 'Bowlby One SC', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    position: relative;
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba(213, 33, 61, 0.4),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.3),
+        inset 0 3px 8px rgba(255, 255, 255, 0.15);
+    transition: all 0.15s ease;
+}
+
+.start-button:hover:not(:disabled) {
+    transform: scale(1.06);
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        0 0 25px rgba(213, 33, 61, 0.6),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.3),
+        inset 0 3px 8px rgba(255, 255, 255, 0.15);
+}
+
+.start-button:active:not(:disabled) {
+    transform: scale(0.95);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(213, 33, 61, 0.3),
+        inset 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.start-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: saturate(0.5);
+}
+
+.btn-text {
+    pointer-events: none;
+}
+
+/* ========================================
+   Machine Base
+   ======================================== */
+
+.machine-base {
+    width: 740px;
+    height: 30px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-dark), #8b6914);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================
+   Lever
+   ======================================== */
+
+#lever {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: -10px;
+    align-self: flex-start;
+    margin-top: 140px;
+}
+
+.lever-mount {
+    width: 40px;
+    height: 30px;
+    background: linear-gradient(180deg, #888, #555);
+    border-radius: 6px 6px 0 0;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+}
+
+.lever-slot {
+    width: 20px;
+    height: 300px;
+    background: linear-gradient(to right, #444, #666, #444);
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    box-shadow:
+        inset 2px 2px 6px rgba(0,0,0,0.6),
+        2px 2px 6px rgba(0,0,0,0.3);
+    overflow: visible;
+}
+
+.lever-stick {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -22px;
+    transition: top 0.5s ease-out;
+}
+
+.lever-knob {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle at 35% 35%, #ff4444, #cc0000, #880000);
+    border-radius: 50%;
+    border: 3px solid var(--gold-dark);
+    box-shadow:
+        2px 4px 12px rgba(0,0,0,0.5),
+        0 0 10px rgba(213, 33, 61, 0.3);
+}
+
+#lever.pulled .lever-stick {
+    top: 270px;
+    transition: top 0.35s ease-in;
+}
+
+#lever:hover .lever-knob {
+    box-shadow:
+        2px 4px 12px rgba(0,0,0,0.5),
+        0 0 20px rgba(213, 33, 61, 0.6);
+}
+
+/* ========================================
+   Win celebration particles
+   ======================================== */
+
+.machine.celebrating .marquee {
+    animation: cabinet-flash 0.3s ease-in-out 6;
+}
+
+@keyframes cabinet-flash {
+    0%, 100% { box-shadow: 0 -4px 20px rgba(213, 33, 61, 0.5); }
+    50%      { box-shadow: 0 -4px 40px rgba(245, 197, 24, 0.8), 0 0 60px rgba(245, 197, 24, 0.4); }
+}
+
+/* ========================================
+   Jackpot Blinking Background
+   ======================================== */
+
+body.jackpot-blink {
+    animation: jackpot-bg-blink 0.3s ease-in-out 12;
+}
+
+@keyframes jackpot-bg-blink {
+    0%, 100% {
+        background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
+    }
+    25% {
+        background: radial-gradient(ellipse at center, #3d1a00 0%, #1a0a00 70%, #000 100%);
     }
     50% {
-        transform: rotate(-7deg);
+        background: radial-gradient(ellipse at center, #3d3200 0%, #1a1500 70%, #000 100%);
     }
-    100% {
-        transform: rotate(7deg);
+    75% {
+        background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
     }
-}*/
-
-/* Add styles for the red circle */
-.start-button {
-  width: 70px;
-  height: 70px;
-  margin-top: 50px;
-  background-color: red;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-/* Style for the result text */
-.result-text {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-    margin-top: 100px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
