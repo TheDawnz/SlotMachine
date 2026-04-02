@@ -495,6 +495,7 @@ body {
    Jackpot Blinking Background
    ======================================== */
 
+/* Jackpot — gold/amber flash */
 body.jackpot-blink {
     animation: jackpot-bg-blink 0.3s ease-in-out 12;
 }
@@ -503,13 +504,49 @@ body.jackpot-blink {
     0%, 100% {
         background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
     }
-    25% {
-        background: radial-gradient(ellipse at center, #3d1a00 0%, #1a0a00 70%, #000 100%);
+    50% {
+        background: radial-gradient(ellipse at center, #4a3800 0%, #2b2000 50%, #0a0015 100%);
+    }
+}
+
+/* Big Reward — red/magenta pulse */
+body.big-reward-blink {
+    animation: big-reward-bg-blink 0.4s ease-in-out 8;
+}
+
+@keyframes big-reward-bg-blink {
+    0%, 100% {
+        background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
     }
     50% {
-        background: radial-gradient(ellipse at center, #3d3200 0%, #1a1500 70%, #000 100%);
+        background: radial-gradient(ellipse at center, #4a0020 0%, #2b0012 50%, #0a0015 100%);
     }
-    75% {
+}
+
+/* Small Reward — blue/cyan pulse */
+body.small-reward-blink {
+    animation: small-reward-bg-blink 0.5s ease-in-out 6;
+}
+
+@keyframes small-reward-bg-blink {
+    0%, 100% {
         background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
+    }
+    50% {
+        background: radial-gradient(ellipse at center, #002a4a 0%, #001a2b 50%, #000515 100%);
+    }
+}
+
+/* Loss — dim red flash */
+body.loss-blink {
+    animation: loss-bg-blink 0.6s ease-in-out 3;
+}
+
+@keyframes loss-bg-blink {
+    0%, 100% {
+        background: radial-gradient(ellipse at center, #1a0533 0%, #0a0015 70%, #000 100%);
+    }
+    50% {
+        background: radial-gradient(ellipse at center, #2a0a0a 0%, #150505 50%, #050000 100%);
     }
 }

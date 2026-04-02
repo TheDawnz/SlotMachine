@@ -190,13 +190,18 @@ function setResult(showResult) {
                 launchConfetti(resultClass === 'jackpot');
             }
 
-            // Play the appropriate sound effect based on the result
-            if (isBigReward) {
+            // Background effect for each reward type
+            if (isJackpot) {
+                startBlinkingBackground('jackpot');
+                jackpotSound.play();
+            } else if (isBigReward) {
+                startBlinkingBackground('big-reward');
                 smallRewardSound.play();
             } else if (isSmallReward) {
+                startBlinkingBackground('small-reward');
                 smallRewardSound.play();
-            } else if (isJackpot) {
-                jackpotSound.play();
+            } else {
+                startBlinkingBackground('loss');
             }
         }, BASE_SPINNING_DURATION * 1000 + COLUMN_SPINNING_DURATION * cols.length * 1000 - 500);
     }
@@ -334,13 +339,19 @@ function drawCoin(ctx, p) {
 
 let blinkTimer = null;
 
-function startBlinkingBackground() {
-    document.body.classList.add('jackpot-blink');
+function startBlinkingBackground(rewardType) {
+    // Remove any existing blink classes
+    document.body.classList.remove('jackpot-blink', 'big-reward-blink', 'small-reward-blink', 'loss-blink');
     if (blinkTimer) clearTimeout(blinkTimer);
+
+    let blinkClass = rewardType + '-blink';
+    let duration = rewardType === 'jackpot' ? 4000 : rewardType === 'loss' ? 2000 : 3000;
+
+    document.body.classList.add(blinkClass);
     blinkTimer = setTimeout(() => {
-        document.body.classList.remove('jackpot-blink');
+        document.body.classList.remove(blinkClass);
         blinkTimer = null;
-    }, 4000);
+    }, duration);
 }
 
 function launchConfetti(isJackpot) {
