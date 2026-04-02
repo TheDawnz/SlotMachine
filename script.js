@@ -5,7 +5,7 @@ const ICONS = [
 /**
  * @type {number} The minimum spin time in seconds
  */
-const BASE_SPINNING_DURATION = 2.7;
+const BASE_SPINNING_DURATION = 2;
 
 /**
  * @type {number} The additional duration to the base duration for each row (in seconds).
@@ -43,18 +43,31 @@ function setInitialItems() {
     }
 }
 
+// Add sound effects
+const spinSound = new Audio('audio/spin.mp3');
+const smallRewardSound = new Audio('audio/win1.mp3');
+const jackpotSound = new Audio('audio/jackpot.mp3');
+
 /**
  * Called when the start-button is pressed.
  *
  * @param elem The button itself
  */
 function spin(elem) {
-    let duration = BASE_SPINNING_DURATION + randomDuration();
+    let duration = BASE_SPINNING_DURATION;
     document.getElementById('result-box').innerText = "Waiting..."; // Clear the result box initially
 
+    spinSound.currentTime = 2.2; // Start playing from 2.2 seconds
+    spinSound.play();
+
+    // Stop the spin sound after the spinning duration
+    setTimeout(() => {
+        spinSound.pause();
+        spinSound.currentTime = 0; // Reset the playback position
+    }, duration * 2000); // Convert duration to milliseconds
 
     for (let col of cols) { // set the animation duration for each column
-        duration += COLUMN_SPINNING_DURATION + randomDuration();
+        duration += COLUMN_SPINNING_DURATION;
         col.style.animationDuration = duration + "s";
     }
 
@@ -79,19 +92,21 @@ function spin(elem) {
  * Sets the result items at the beginning and the end of the columns
  */
 function setResult() {
-    const jackpotChance = 0.1; // 10% chance for jackpot
+    const randomNumber = Math.random(); // Generate a random number between 0 and 1
+
+    const jackpotChance = 0.5; // 10% chance for jackpot
     const jackpotIcons = ['jackpot']; // Icons eligible for jackpot
-    const isJackpot = Math.random() < jackpotChance; // Determine if jackpot condition is triggered
+    const isJackpot = randomNumber < jackpotChance; // Determine if jackpot condition is triggered
     const jackpotIcon = jackpotIcons[Math.floor(Math.random() * jackpotIcons.length)]; // Select jackpot icon
 
     const bigRewardChance = 0.3; // 30% chance for big reward condition
     const bigRewardIcons =  ['discount']; // Icons eligible for big reward
-    const isBigReward = Math.random() < bigRewardChance; // Determine if big reward condition is triggered
+    const isBigReward = randomNumber < bigRewardChance; // Determine if big reward condition is triggered
     const bigRewardIcon = bigRewardIcons[Math.floor(Math.random() * bigRewardIcons.length)]; // Select big reward icon
 
-    const smallRewardChance = 0.1; // 10% chance for small reward condition
+    const smallRewardChance = 0.4; // 10% chance for small reward condition
     const smallRewardIcons = ICONS.filter(icon => !(bigRewardIcons.includes(icon) || jackpotIcons.includes(icon))); // Icons eligible for small reward
-    const isSmallReward = !isBigReward && !isJackpot && (Math.random() < smallRewardChance); // Determine if small reward condition is triggered
+    const isSmallReward = randomNumber < smallRewardChance; // Determine if small reward condition is triggered
     const smallRewardIcon = smallRewardIcons[Math.floor(Math.random() * smallRewardIcons.length)]; // Select small reward icon
 
     let resultMessage = ""; // Initialize result message
@@ -111,6 +126,7 @@ function setResult() {
             // Set all columns to the jackpot icon
             results = [jackpotIcon, jackpotIcon, jackpotIcon];
             resultMessage = "Jackpot! free topping!";
+            
         } else {
             // Generate 3 random items
             results = [
@@ -130,10 +146,17 @@ function setResult() {
     }
 
     // Update the result box with the result message after a delay to match the spinning animation
-    
     setTimeout(() => {
         document.getElementById('result-box').innerText = resultMessage;
-    }, BASE_SPINNING_DURATION * 1000 + COLUMN_SPINNING_DURATION * cols.length * 1000 - 1000);
+        // Play the appropriate sound effect based on the result
+        if (isBigReward) {
+            smallRewardSound.play();
+        } else if (isSmallReward) {
+            smallRewardSound.play();
+        } else if (isJackpot) {
+            jackpotSound.play();
+        }
+    }, BASE_SPINNING_DURATION * 1000 + COLUMN_SPINNING_DURATION * cols.length * 1000 -500);
 }
 
 const ICON_WEIGHTS = {
